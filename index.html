@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rental Kit Builder</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f7fa; color: #333; font-size: 14px; }
+  .header { background: #1a2a3a; color: #fff; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
+  .header h1 { font-size: 18px; font-weight: 600; }
+  .header-actions { display: flex; gap: 8px; }
+  .layout { display: grid; grid-template-columns: 1fr 340px; gap: 16px; max-width: 1200px; margin: 0 auto; padding: 16px; }
+  @media (max-width: 860px) { .layout { grid-template-columns: 1fr; } }
+  .steps { display: flex; flex-direction: column; gap: 12px; }
+  .step { background: #fff; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.06); padding: 14px 16px; }
+  .step-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .step-num { background: #1a2a3a; color: #fff; width: 22px; height: 22px; border-radius: 50%; text-align: center; line-height: 22px; font-size: 11px; font-weight: 600; flex-shrink: 0; }
+  .step-title { font-size: 14px; font-weight: 600; }
+  .step-desc { font-size: 11px; color: #888; margin-left: auto; }
+  .step select { width: 100%; padding: 8px 10px; border: 1px solid #d0d5dd; border-radius: 6px; font-size: 13px; background: #fff; color: #333; cursor: pointer; }
+  .step select:focus { outline: none; border-color: #2a7ae2; }
+  .filter-input { width: 100%; padding: 6px 10px; border: 1px solid #d0d5dd; border-radius: 6px; font-size: 12px; margin-bottom: 6px; }
+  .filter-input:focus { outline: none; border-color: #2a7ae2; }
+  .check-list { max-height: 160px; overflow-y: auto; border: 1px solid #e8eaed; border-radius: 6px; }
+  .check-item { display: flex; align-items: center; gap: 8px; padding: 5px 10px; cursor: pointer; border-bottom: 1px solid #f3f4f6; font-size: 13px; }
+  .check-item:last-child { border-bottom: none; }
+  .check-item:hover { background: #f8fafc; }
+  .check-item input { margin: 0; cursor: pointer; }
+  .check-item .ci-part { font-family: 'SF Mono', Consolas, monospace; font-weight: 600; min-width: 60px; font-size: 12px; }
+  .check-item .ci-desc { color: #555; }
+  .check-item .ci-qty { margin-left: auto; display: flex; align-items: center; gap: 4px; }
+  .check-item .ci-qty button { width: 20px; height: 20px; border: 1px solid #ccc; border-radius: 3px; background: #f9f9f9; cursor: pointer; font-size: 12px; line-height: 1; padding: 0; }
+  .check-item .ci-qty button:hover { background: #e9e9e9; }
+  .check-item .ci-qty span { font-size: 12px; min-width: 16px; text-align: center; }
+  .summary { background: #fff; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.06); padding: 16px; position: sticky; top: 16px; align-self: start; }
+  .summary h2 { font-size: 15px; margin-bottom: 4px; }
+  .summary .count { font-size: 11px; color: #888; margin-bottom: 12px; }
+  .summary-empty { color: #999; font-size: 13px; padding: 20px 0; text-align: center; }
+  .summary-list { list-style: none; }
+  .summary-list li { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid #f3f4f6; font-size: 13px; }
+  .summary-list li:last-child { border-bottom: none; }
+  .summary-list .sl-part { font-family: 'SF Mono', Consolas, monospace; font-weight: 600; }
+  .summary-list .sl-desc { color: #666; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .summary-list .sl-qty { color: #888; font-size: 12px; flex-shrink: 0; }
+  .summary-cat { font-size: 10px; text-transform: uppercase; color: #aaa; letter-spacing: 0.5px; padding-top: 10px; padding-bottom: 2px; font-weight: 600; }
+  .summary-cat:first-child { padding-top: 0; }
+  .actions { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+  .btn { padding: 7px 14px; border: none; border-radius: 5px; font-size: 12px; font-weight: 500; cursor: pointer; transition: background 0.15s; }
+  .btn-primary { background: #2a7ae2; color: #fff; }
+  .btn-primary:hover { background: #1a6ad2; }
+  .btn-secondary { background: #e8ecf0; color: #333; }
+  .btn-secondary:hover { background: #d8dce0; }
+  .btn-danger { background: #fff; color: #d44; border: 1px solid #dcc; font-size: 11px; padding: 5px 10px; }
+  .btn-danger:hover { background: #fef0f0; }
+  .toast { position: fixed; bottom: 20px; right: 20px; background: #1a2a3a; color: #fff; padding: 10px 16px; border-radius: 6px; font-size: 13px; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 10; }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>Rental Kit Builder</h1>
+  <div class="header-actions">
+    <button class="btn btn-danger" onclick="clearAll()">Clear All</button>
+  </div>
+</div>
+<div class="layout">
+  <div class="steps" id="steps"></div>
+  <div class="summary" id="summary">
+    <h2>Kit Summary</h2>
+    <div class="count" id="summary-count">0 items</div>
+    <div id="summary-content">
+      <p class="summary-empty">Select options to build your kit.</p>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const STEPS = [
+  { id: 'laptop', title: 'Laptop Type', description: 'Validated or non-validated', type: 'dropdown', options: [
+    { part: '200100', desc: 'Validated Laptop' }, { part: '200200', desc: 'Non-Validated Laptop' }
+  ]},
+  { id: 'reader', title: 'Reader Station', description: 'Select reader type', type: 'dropdown', options: [
+    { part: '300100', desc: 'Standard Reader Station' }, { part: '300200', desc: 'Advanced Reader Station' }, { part: '300300', desc: 'Portable Reader Station' }
+  ]},
+  { id: 'sensor', title: 'Sensors', description: 'Select one or more', type: 'checklist', options: [
+    { part: '400100', desc: 'Temperature Sensor - Type A' }, { part: '400101', desc: 'Temperature Sensor - Type B' },
+    { part: '400102', desc: 'Temperature Sensor - Type C' }, { part: '400200', desc: 'Humidity Sensor - Standard' },
+    { part: '400201', desc: 'Humidity Sensor - High Precision' }, { part: '400300', desc: 'Pressure Sensor' },
+    { part: '400400', desc: 'Dual Temp/Humidity Sensor' }, { part: '400500', desc: 'CO2 Sensor' },
+    { part: '400600', desc: 'Light Sensor' }, { part: '400700', desc: 'Differential Pressure Sensor' }
+  ]},
+  { id: 'datalogger', title: 'Datalogger', description: 'Select datalogger type', type: 'dropdown', options: [
+    { part: '500100', desc: 'Single-Channel Datalogger' }, { part: '500200', desc: 'Multi-Channel Datalogger' }, { part: '500300', desc: 'Wireless Datalogger' }
+  ]},
+  { id: 'postverif', title: 'Post Verification', description: 'Optional service', type: 'dropdown', options: [
+    { part: '600100', desc: 'Post Verification Included' }, { part: '', desc: 'No Post Verification' }
+  ]}
+];
+const state = {};
+function init() {
+  const stepsEl = document.getElementById('steps');
+  stepsEl.innerHTML = '';
+  STEPS.forEach((step, i) => {
+    const div = document.createElement('div');
+    div.className = 'step';
+    let bodyHTML = '';
+    if (step.type === 'dropdown') {
+      bodyHTML = '<select data-step="' + step.id + '" onchange="handleDropdown(this)"><option value="">— Select —</option>' + step.options.map(o => '<option value="' + o.part + '" data-desc="' + o.desc + '">' + (o.part ? o.part + ' — ' : '') + o.desc + '</option>').join('') + '</select>';
+    } else {
+      bodyHTML = '<input type="text" class="filter-input" placeholder="Search ' + step.title.toLowerCase() + '..." oninput="filterList('' + step.id + '', this.value)"><div class="check-list" id="list-' + step.id + '">' + step.options.map(o => '<label class="check-item" data-search="' + (o.part + ' ' + o.desc).toLowerCase() + '"><input type="checkbox" data-step="' + step.id + '" data-part="' + o.part + '" onchange="handleCheck(this)"><span class="ci-part">' + o.part + '</span><span class="ci-desc">' + o.desc + '</span><span class="ci-qty"><button onclick="event.preventDefault();changeQty('' + step.id + '','' + o.part + '',-1)">−</button><span id="qty-' + step.id + '-' + o.part + '">1</span><button onclick="event.preventDefault();changeQty('' + step.id + '','' + o.part + '',1)">+</button></span></label>').join('') + '</div>';
+    }
+    div.innerHTML = '<div class="step-header"><span class="step-num">' + (i+1) + '</span><span class="step-title">' + step.title + '</span><span class="step-desc">' + step.description + '</span></div>' + bodyHTML;
+    stepsEl.appendChild(div);
+  });
+  renderSummary();
+}
+function handleDropdown(el) { const s=el.dataset.step; state[s]={}; if(el.value) state[s][el.value]=1; renderSummary(); }
+function handleCheck(el) { const s=el.dataset.step,p=el.dataset.part; if(!state[s]) state[s]={}; if(el.checked){const q=document.getElementById('qty-'+s+'-'+p); state[s][p]=parseInt(q.textContent)||1;}else{delete state[s][p];} renderSummary(); }
+function changeQty(s,p,d) { const q=document.getElementById('qty-'+s+'-'+p); let v=Math.max(1,(parseInt(q.textContent)||1)+d); q.textContent=v; if(state[s]&&state[s][p]!==undefined){state[s][p]=v;renderSummary();} }
+function filterList(s,q) { const l=q.toLowerCase(); document.querySelectorAll('#list-'+s+' .check-item').forEach(i=>{i.style.display=i.dataset.search.includes(l)?'':'none';}); }
+function getSelectedParts() { const p=[]; STEPS.forEach(s=>{if(!state[s.id])return; Object.keys(state[s.id]).forEach(k=>{if(!k)return; const o=s.options.find(x=>x.part===k); p.push({category:s.title,part:k,desc:o?o.desc:'',qty:state[s.id][k]});}); }); return p; }
+function renderSummary() { const p=getSelectedParts(),c=document.getElementById('summary-content'),n=document.getElementById('summary-count'),t=p.reduce((s,x)=>s+x.qty,0); n.textContent=p.length+' line item'+(p.length!==1?'s':'')+' · '+t+' total qty'; if(!p.length){c.innerHTML='<p class="summary-empty">Select options to build your kit.</p>';return;} let h='<ul class="summary-list">',l=''; p.forEach(x=>{if(x.category!==l){h+='<li class="summary-cat">'+x.category+'</li>';l=x.category;} h+='<li><span class="sl-part">'+x.part+'</span><span class="sl-desc">'+x.desc+'</span>'+(x.qty>1?'<span class="sl-qty">x'+x.qty+'</span>':'')+'</li>';}); h+='</ul><div class="actions"><button class="btn btn-primary" onclick="copyToClipboard()">Copy</button><button class="btn btn-secondary" onclick="exportCSV()">CSV</button></div>'; c.innerHTML=h; }
+function copyToClipboard() { const p=getSelectedParts(),t=p.map(x=>x.part+'	'+x.desc+'	'+x.qty).join('
+'); navigator.clipboard.writeText(t).then(()=>showToast('Copied to clipboard!')); }
+function exportCSV() { const p=getSelectedParts(); let c='Part Number,Description,Qty,Category
+'; p.forEach(x=>c+=x.part+',"'+x.desc+'",'+x.qty+',"'+x.category+'"
+'); const b=new Blob([c],{type:'text/csv'}),a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='rental-kit.csv'; a.click(); showToast('CSV downloaded!'); }
+function clearAll() { Object.keys(state).forEach(k=>delete state[k]); document.querySelectorAll('select').forEach(e=>e.selectedIndex=0); document.querySelectorAll('input[type="checkbox"]').forEach(e=>e.checked=false); document.querySelectorAll('.ci-qty span[id^="qty-"]').forEach(e=>e.textContent='1'); renderSummary(); }
+function showToast(m) { const t=document.getElementById('toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
+init();
+</script>
+</body>
+</html>
