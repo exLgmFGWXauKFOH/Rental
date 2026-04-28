@@ -293,8 +293,8 @@ function renderSteps() {
 
     if (step.type === 'dropdown') {
       bodyHTML = `<select data-step="${step.id}" onchange="handleDropdown(this)">
-        <option value="">â Select â</option>
-        ${step.options.map(o => `<option value="${o.part}" data-desc="${o.desc}">${o.part} â ${o.desc}</option>`).join('')}
+        <option value="">&mdash; Select &mdash;</option>
+        ${step.options.map(o => `<option value="${o.part}" data-desc="${o.desc}">${o.part} &mdash; ${o.desc}</option>`).join('')}
       </select>`;
     } else {
       bodyHTML = `
@@ -306,7 +306,7 @@ function renderSteps() {
               <span class="ci-part">${o.part}</span>
               <span class="ci-desc">${o.desc}</span>
               <span class="ci-qty">
-                <button onclick="event.preventDefault();changeQty('${step.id}','${o.part}',${idx},-1)">â</button>
+                <button onclick="event.preventDefault();changeQty('${step.id}','${o.part}',${idx},-1)">&minus;</button>
                 <span id="qty-${step.id}-${idx}">1</span>
                 <button onclick="event.preventDefault();changeQty('${step.id}','${o.part}',${idx},1)">+</button>
               </span>
@@ -380,7 +380,7 @@ function renderSummary() {
   const content = document.getElementById('summary-content');
   const countEl = document.getElementById('summary-count');
   const totalQty = parts.reduce((s, p) => s + p.qty, 0);
-  countEl.textContent = `${parts.length} line item${parts.length !== 1 ? 's' : ''} Â· ${totalQty} total qty`;
+  countEl.textContent = `${parts.length} line item${parts.length !== 1 ? 's' : ''} \u00B7 ${totalQty} total qty`;
 
   if (!currentKit) { content.innerHTML = '<p class="summary-empty">Select a kit type to begin.</p>'; return; }
   if (parts.length === 0) { content.innerHTML = '<p class="summary-empty">Select options to build your kit.</p>'; return; }
