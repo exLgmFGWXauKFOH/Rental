@@ -9,6 +9,290 @@
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f7fa; color: #333; font-size: 14px; }
   .header { background: #1a2a3a; color: #fff; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
   .header h1 { font-size: 18px; font-weight: 600; }
+  .kit-selector { background: #fff; border-bottom: 1px solid #e0e4ea; padding: 14px 24px; display: flex; align-items: center; gap: 12px; }
+  .kit-selector label { font-size: 13px; font-weight: 600; color: #555; margin-right: 4px; }
+  .kit-btn { padding: 7px 18px; border: 2px solid #d0d5dd; border-radius: 6px; background: #fff; font-size: 13px; font-weight: 500; cursor: pointer; color: #555; transition: all 0.15s; }
+  .kit-btn.active { border-color: #1a2a3a; background: #1a2a3a; color: #fff; }
+  .kit-btn:hover:not(.active) { border-color: #a0b0c0; }
+  .layout { display: grid; grid-template-columns: 1fr 340px; gap: 16px; max-width: 1200px; margin: 0 auto; padding: 16px; }
+  @media (max-width: 860px) { .layout { grid-template-columns: 1fr; } }
+  .steps { display: flex; flex-direction: column; gap: 12px; }
+  .step { background: #fff; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.06); padding: 14px 16px; }
+  .step-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .step-num { background: #1a2a3a; color: #fff; width: 22px; height: 22px; border-radius: 50%; text-align: center; line-height: 22px; font-size: 11px; font-weight: 600; flex-shrink: 0; }
+  .step-title { font-size: 14px; font-weight: 600; }
+  .step-badge { font-size: 10px; color: #888; background: #f0f2f5; padding: 2px 7px; border-radius: 10px; margin-left: 6px; }
+  .step-desc { font-size: 11px; color: #888; margin-left: auto; }
+  .step select { width: 100%; padding: 8px 10px; border: 1px solid #d0d5dd; border-radius: 6px; font-size: 13px; background: #fff; color: #333; cursor: pointer; }
+  .step select:focus { outline: none; border-color: #2a7ae2; }
+  .filter-input { width: 100%; padding: 6px 10px; border: 1px solid #d0d5dd; border-radius: 6px; font-size: 12px; margin-bottom: 6px; }
+  .filter-input:focus { outline: none; border-color: #2a7ae2; }
+  .check-list { max-height: 180px; overflow-y: auto; border: 1px solid #e8eaed; border-radius: 6px; }
+  .check-item { display: flex; align-items: center; gap: 8px; padding: 5px 10px; cursor: pointer; border-bottom: 1px solid #f3f4f6; font-size: 13px; }
+  .check-item:last-child { border-bottom: none; }
+  .check-item:hover { background: #f8fafc; }
+  .check-item input { margin: 0; cursor: pointer; flex-shrink: 0; }
+  .check-item .ci-part { font-family: 'SF Mono', Consolas, monospace; font-weight: 600; min-width: 72px; font-size: 12px; color: #1a2a3a; }
+  .check-item .ci-desc { color: #555; flex: 1; }
+  .check-item .ci-qty { margin-left: auto; display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+  .check-item .ci-qty button { width: 20px; height: 20px; border: 1px solid #ccc; border-radius: 3px; background: #f9f9f9; cursor: pointer; font-size: 12px; line-height: 1; padding: 0; }
+  .check-item .ci-qty button:hover { background: #e9e9e9; }
+  .check-item .ci-qty span { font-size: 12px; min-width: 16px; text-align: center; }
+  .summary { background: #fff; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.06); padding: 16px; position: sticky; top: 16px; align-self: start; }
+  .summary h2 { font-size: 15px; margin-bottom: 4px; }
+  .summary .count { font-size: 11px; color: #888; margin-bottom: 12px; }
+  .summary-empty { color: #999; font-size: 13px; padding: 20px 0; text-align: center; }
+  .summary-list { list-style: none; }
+  .summary-list li { display: flex; align-items: flex-start; gap: 8px; padding: 6px 0; border-bottom: 1px solid #f3f4f6; font-size: 13px; }
+  .summary-list li:last-child { border-bottom: none; }
+  .summary-list .sl-part { font-family: 'SF Mono', Consolas, monospace; font-weight: 600; font-size: 12px; flex-shrink: 0; }
+  .summary-list .sl-desc { color: #666; flex: 1; font-size: 12px; line-height: 1.4; }
+  .summary-list .sl-qty { color: #888; font-size: 11px; flex-shrink: 0; }
+  .summary-cat { font-size: 10px; text-transform: uppercase; color: #aaa; letter-spacing: 0.5px; padding-top: 10px; padding-bottom: 2px; font-weight: 600; }
+  .summary-cat:first-child { padding-top: 0; }
+  .actions { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+  .btn { padding: 7px 14px; border: none; border-radius: 5px; font-size: 12px; font-weight: 500; cursor: pointer; transition: background 0.15s; }
+  .btn-primary { background: #2a7ae2; color: #fff; }
+  .btn-primary:hover { background: #1a6ad2; }
+  .btn-secondary { background: #e8ecf0; color: #333; }
+  .btn-secondary:hover { background: #d8dce0; }
+  .btn-danger { background: #fff; color: #d44; border: 1px solid #dcc; font-size: 11px; padding: 5px 10px; }
+  .btn-danger:hover { background: #fef0f0; }
+  .toast { position: fixed; bottom: 20px; right: 20px; background: #1a2a3a; color: #fff; padding: 10px 16px; border-radius: 6px; font-size: 13px; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 10; }
+  .toast.show { opacity: 1; }
+  .no-kit { text-align: center; padding: 60px 20px; color: #aaa; }
+  .no-kit p { font-size: 15px; margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>Kit Builder</h1>
+  <button class="btn btn-danger" onclick="clearAll()">Clear All</button>
+</div>
+<div class="kit-selector">
+  <label>Kit Type:</label>
+  <button class="kit-btn" id="btn-rental" onclick="setKit('rental')">Rental Kit</button>
+  <button class="kit-btn" id="btn-evalPro" onclick="setKit('evalPro')">E-Val Pro Kit</button>
+</div>
+<div class="layout">
+  <div class="steps" id="steps"><div class="no-kit"><p>Select a kit type above to get started.</p></div></div>
+  <div class="summary">
+    <h2>Kit Summary</h2>
+    <div class="count" id="summary-count">0 items</div>
+    <div id="summary-content"><p class="summary-empty">Select a kit type to begin.</p></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const KIT_STEPS = {
+  rental: [
+    { id:'laptop', title:'Laptop', description:'Validated or non-validated', type:'dropdown', options:[
+      {part:'29100000',desc:'1-Month Rental: Validated Laptop'},
+      {part:'29100001',desc:'1-Month Rental: Non-Validated Laptop'}
+    ]},
+    { id:'reader', title:'Reader Station', description:'Select reader type', type:'dropdown', options:[
+      {part:'29310002',desc:'1-Month Rental: C/F Primary Reader Station'},
+      {part:'29310012',desc:'1-Month Rental: C/F Expansion Reader Station'},
+      {part:'15058107',desc:'1-Month Rental: Micro Primary Reader Station'},
+      {part:'15058104',desc:'1-Month Rental: Mini Primary Reader Station'},
+      {part:'15057011',desc:'1-Month Rental: Mini Expansion Reader Station'},
+      {part:'29311001',desc:'1-Month Rental: Pro Primary Reader Station'},
+      {part:'29311011',desc:'1-Month Rental: Pro Expansion Reader Station'}
+    ]},
+    { id:'sensor', title:'Sensors', description:'Select one or more', type:'checklist', options:[
+      {part:'15051025',desc:'1-Month Rental: 25mm Rigid Temp Sensor'},
+      {part:'29351260',desc:'1-Month Rental: 50mm Rigid Sensor'},
+      {part:'15054526',desc:'1-Month Rental: 50cm SmartFlex Sensor'},
+      {part:'15054527',desc:'1-Month Rental: 30cm SmartFlex Sensor'},
+      {part:'15054529',desc:'1-Month Rental: 100cm SmartFlex Sensor'},
+      {part:'15054936',desc:'1-Month Rental: 50cm Dual SmartFlex Sensor'},
+      {part:'15054937',desc:'1-Month Rental: 100cm Dual SmartFlex Sensor'},
+      {part:'29351261',desc:'1-Month Rental: 50cm SemiFlex Sensor'},
+      {part:'29351264',desc:'1-Month Rental: 50cm High-Temp Dual SemiFlex Sensor'},
+      {part:'15053266',desc:'1-Month Rental: 30cm Single Flexible High Temp Sensor'},
+      {part:'29351262',desc:'1-Month Rental: TC Sensor w/ 30cm TC'},
+      {part:'15057921',desc:'1-Month Rental: CO2 Sensor 0-10%'},
+      {part:'15057922',desc:'1-Month Rental: CO2 Sensor 0-20%'},
+      {part:'29351265',desc:'1-Month Rental: 6 Bar Pressure Sensor'},
+      {part:'15057019',desc:'1-Month Rental: Pressure/Temp Sensor'},
+      {part:'15057900',desc:'1-Month Rental: Vacuum Sensor'},
+      {part:'29351267',desc:'1-Month Rental: Bowie Dick Sensor'},
+      {part:'29602542',desc:'1-Month Rental: Pro 5.2 Temp/RH Sensor'},
+      {part:'29159999',desc:'1-Month Rental: Contact Puck for TSP Loggers'}
+    ]},
+    { id:'datalogger', title:'Datalogger', description:'Select one or more', type:'checklist', options:[
+      {part:'15051093',desc:'1-Month Rental: Basic L Logger'},
+      {part:'35221010U',desc:'1-Month Rental: 10mm Rigid Mini Logger'},
+      {part:'35221025U',desc:'1-Month Rental: 25mm Rigid Mini Logger'},
+      {part:'15053035',desc:'1-Month Rental: 35mm Rigid Lab Logger'},
+      {part:'15052100',desc:'1-Month Rental: Lab 5.2 Temp/RH Logger'},
+      {part:'29351230',desc:'1-Month Rental: 3G Pro Logger'},
+      {part:'29351230',desc:'1-Month Rental: 3G ProX Logger'},
+      {part:'29351230',desc:'1-Month Rental: 3G ProXL Logger'},
+      {part:'29311900',desc:'1-Month Rental: 35mm Rigid Frigo Logger'},
+      {part:'29311901',desc:'1-Month Rental: 50cm SemiFlex Frigo Logger'},
+      {part:'29311902',desc:'1-Month Rental: 30cm SemiFlex Frigo Logger'}
+    ]},
+    { id:'lyopro', title:'LyoPro Accessories', description:'Vial nests, clips & pucks', type:'checklist', badge:'Optional', options:[
+      {part:'29903021',desc:'Rental: Logger Nest for Vial Type 2R'},
+      {part:'29903022',desc:'Rental: Logger Connecting Clip for Vial Type 2R'},
+      {part:'29903023',desc:'Rental: LyoStopper 2R'},
+      {part:'15053041',desc:'Rental: Logger Nest for Vial Type 4R'},
+      {part:'15058043',desc:'Rental: StopperClip 4R'},
+      {part:'15053061',desc:'Rental: Logger Nest for Vial Type 6R'},
+      {part:'15058063',desc:'Rental: StopperClip 6R'},
+      {part:'15053081',desc:'Rental: Logger Nest for Vial Type 8R'},
+      {part:'15058083',desc:'Rental: StopperClip 8R'},
+      {part:'15053101',desc:'Rental: Logger Nest for Vial Type 10R'},
+      {part:'15058103',desc:'Rental: StopperClip 10R'},
+      {part:'15053151',desc:'Rental: Logger Nest for Vial Type 15R'},
+      {part:'15058153',desc:'Rental: StopperClip 15R'},
+      {part:'29362001',desc:'Rental: Logger Nest for Vial Type 20R'},
+      {part:'29362003',desc:'Rental: StopperClip 20R'},
+      {part:'29902508',desc:'Rental: Logger Nest for Vial Type 25R'},
+      {part:'29902509',desc:'Rental: StopperClip 25R'},
+      {part:'29902510',desc:'Rental: LyoPuck'},
+      {part:'29159997',desc:'1-Month Rental: FixPro Case'},
+      {part:'29159996',desc:'1-Month Rental: Magnetic Logger Case'},
+      {part:'15050036',desc:'Rental: Magnet FixPro Case'}
+    ]},
+    { id:'sky', title:'Sky / Wireless', description:'Optional add-ons', type:'checklist', badge:'Optional', options:[
+      {part:'29310086',desc:'1-Month Rental: Sky Access Point'},
+      {part:'29310090',desc:'Rental: Sky Module 2G'},
+      {part:'29310093',desc:'1-Month Rental: Pro Sky Module'},
+      {part:'29310092',desc:'1-Month Rental: ProXL Sky Module'},
+      {part:'15050702',desc:'1-Month Rental: Remote Sky Antenna 50cm'}
+    ]},
+    { id:'thermal', title:'Thermal Barriers', description:'Optional add-ons', type:'checklist', badge:'Optional', options:[
+      {part:'29151500',desc:'1-Month Rental: TBF40-2 Thermal Barrier'},
+      {part:'29151502',desc:'1-Month Rental: TTB64-2 Thermal Barrier Dbl.'},
+      {part:'15051505',desc:'1-Month Rental: TTB80-2 Thermal Barrier Dbl.'}
+    ]},
+    { id:'dryblock', title:'Dryblocks & Temp Standards', description:'Optional add-ons', type:'checklist', badge:'Optional', options:[
+      {part:'29192000',desc:'1-Month Rental: ETS-25 Temperature Standard'},
+      {part:'15050155',desc:'1-Month Rental: PTC-155A Dryblock w/ Insert -25C to +155C'},
+      {part:'29425000',desc:'1-Month Rental: PTC-425 Dryblock w/ Insert +33C to +425C'},
+      {part:'15050700',desc:'1-Month Rental: RTC-700A Dryblock w/ Insert +33C to +700C'},
+      {part:'29159000',desc:'1-Month Rental: RTC-159 Dryblock w/ Insert -100C to +155C'},
+      {part:'15050500',desc:'Rental: Process Challenge Device (PCD)'}
+    ]},
+    { id:'postverif', title:'Post Verification', description:'Optional service', type:'checklist', badge:'Optional', options:[
+      {part:'15052071',desc:'Rental: TrackSense Temperature Sensor Post Verification'},
+      {part:'15052072',desc:'Rental: Other Sensor Post Verification (RH/CO2/Pressure/etc.)'},
+      {part:'29902505',desc:'Rental: T/C Rental Pre-Calibration, specify any 3 points'},
+      {part:'29902506',desc:'Rental: T/C Rental Post-Calibration, specify any 3 points'}
+    ]}
+  ],
+  evalPro: [
+    { id:'evp_system', title:'E-Val Pro System', description:'Select module and/or array', type:'checklist', options:[
+      {part:'29600000',desc:'1-Month Rental: E-Val Pro Module'},
+      {part:'29600020',desc:'1-Month Rental: E-Val Pro Plus Module'},
+      {part:'29600011',desc:'1-Month Rental: E-Val Pro 4-Channel Array'},
+      {part:'29600010',desc:'1-Month Rental: E-Val Pro 12-Channel Array'},
+      {part:'15056008',desc:'1-Month Rental: E-Val Pro Sensor Interface'}
+    ]},
+    { id:'evp_addons', title:'STC Probes & Add-ons', description:'Optional add-ons', type:'checklist', badge:'Optional', options:[
+      {part:'29602501',desc:'Rental: Pre-Cal. STC Probe 7 Mtr w/ Smart USB Connector'},
+      {part:'29602503',desc:'Rental: Pre-Cal. STC 22 Probe 7 Mtr w/ Smart USB Connector'},
+      {part:'29602590',desc:'1-Month Rental: Smart USB for E-Val Pro TCs'},
+      {part:'29602504',desc:'1-Month Rental: TC with Smart USB 25ft 22AWG'},
+      {part:'21416000U',desc:'Rental: EVP Digital Pressure Sensor 0-4'}
+    ]},
+    { id:'evp_postverif', title:'Post Verification', description:'Optional service', type:'checklist', badge:'Optional', options:[
+      {part:'15052071',desc:'Rental: TrackSense Temperature Sensor Post Verification'},
+      {part:'15052072',desc:'Rental: Other Sensor Post Verification (RH/CO2/Pressure/etc.)'},
+      {part:'29902505',desc:'Rental: T/C Rental Pre-Calibration, specify any 3 points'},
+      {part:'29902506',desc:'Rental: T/C Rental Post-Calibration, specify any 3 points'}
+    ]}
+  ]
+};
+
+let currentKit = null;
+const state = {};
+
+function setKit(kit) {
+  if (currentKit === kit) return;
+  currentKit = kit;
+  Object.keys(state).forEach(k => delete state[k]);
+  document.getElementById('btn-rental').classList.toggle('active', kit === 'rental');
+  document.getElementById('btn-evalPro').classList.toggle('active', kit === 'evalPro');
+  renderSteps(); renderSummary();
+}
+
+function renderSteps() {
+  const stepsEl = document.getElementById('steps');
+  stepsEl.innerHTML = '';
+  (KIT_STEPS[currentKit] || []).forEach((step, i) => {
+    const div = document.createElement('div');
+    div.className = 'step';
+    let body = '';
+    if (step.type === 'dropdown') {
+      body = '<select data-step="'+step.id+'" onchange="handleDropdown(this)"><option value="">— Select —</option>' +
+        step.options.map(o => '<option value="'+o.part+'" data-desc="'+o.desc+'">'+o.part+' — '+o.desc+'</option>').join('') + '</select>';
+    } else {
+      body = '<input type="text" class="filter-input" placeholder="Search..." oninput="filterList(''+step.id+'', this.value)">' +
+        '<div class="check-list" id="list-'+step.id+'">' +
+        step.options.map((o,idx) => '<label class="check-item" data-search="'+(o.part+' '+o.desc).toLowerCase()+'"><input type="checkbox" data-step="'+step.id+'" data-part="'+o.part+'" data-idx="'+idx+'" onchange="handleCheck(this)"><span class="ci-part">'+o.part+'</span><span class="ci-desc">'+o.desc+'</span><span class="ci-qty"><button onclick="event.preventDefault();changeQty(''+step.id+'',''+o.part+'','+idx+',-1)">−</button><span id="qty-'+step.id+'-'+idx+'">1</span><button onclick="event.preventDefault();changeQty(''+step.id+'',''+o.part+'','+idx+',1)">+</button></span></label>').join('') + '</div>';
+    }
+    div.innerHTML = '<div class="step-header"><span class="step-num">'+(i+1)+'</span><span class="step-title">'+step.title+'</span>'+(step.badge?'<span class="step-badge">'+step.badge+'</span>':'')+'<span class="step-desc">'+step.description+'</span></div>'+body;
+    stepsEl.appendChild(div);
+  });
+}
+
+function handleDropdown(el) {
+  const s=el.dataset.step; state[s]={};
+  if(el.value) state[s][el.value+'_0']={part:el.value,desc:el.selectedOptions[0]?.dataset.desc||'',qty:1};
+  renderSummary();
+}
+function handleCheck(el) {
+  const s=el.dataset.step,p=el.dataset.part,idx=el.dataset.idx,key=p+'_'+idx;
+  if(!state[s]) state[s]={};
+  if(el.checked){const q=document.getElementById('qty-'+s+'-'+idx);const st=KIT_STEPS[currentKit].find(x=>x.id===s);state[s][key]={part:p,desc:st.options[idx].desc,qty:parseInt(q.textContent)||1};}
+  else{delete state[s][key];}
+  renderSummary();
+}
+function changeQty(s,p,idx,d) {
+  const q=document.getElementById('qty-'+s+'-'+idx);let v=Math.max(1,(parseInt(q.textContent)||1)+d);q.textContent=v;
+  const key=p+'_'+idx;if(state[s]&&state[s][key]){state[s][key].qty=v;renderSummary();}
+}
+function filterList(s,q) {
+  const l=q.toLowerCase();document.querySelectorAll('#list-'+s+' .check-item').forEach(i=>{i.style.display=i.dataset.search.includes(l)?'':'none';});
+}
+function getSelectedParts() {
+  const parts=[];if(!currentKit) return parts;
+  KIT_STEPS[currentKit].forEach(step=>{if(!state[step.id])return;Object.values(state[step.id]).forEach(item=>parts.push({category:step.title,part:item.part,desc:item.desc,qty:item.qty}));});
+  return parts;
+}
+function renderSummary() {
+  const parts=getSelectedParts(),content=document.getElementById('summary-content'),n=document.getElementById('summary-count'),t=parts.reduce((s,p)=>s+p.qty,0);
+  n.textContent=parts.length+' line item'+(parts.length!==1?'s':'')+' · '+t+' total qty';
+  if(!currentKit){content.innerHTML='<p class="summary-empty">Select a kit type to begin.</p>';return;}
+  if(!parts.length){content.innerHTML='<p class="summary-empty">Select options to build your kit.</p>';return;}
+  let h='<ul class="summary-list">',l='';
+  parts.forEach(p=>{if(p.category!==l){h+='<li class="summary-cat">'+p.category+'</li>';l=p.category;}h+='<li><span class="sl-part">'+p.part+'</span><span class="sl-desc">'+p.desc+'</span>'+(p.qty>1?'<span class="sl-qty">x'+p.qty+'</span>':'')+'</li>';});
+  h+='</ul><div class="actions"><button class="btn btn-primary" onclick="copyToClipboard()">Copy</button><button class="btn btn-secondary" onclick="exportCSV()">CSV</button></div>';
+  content.innerHTML=h;
+}
+function copyToClipboard(){const p=getSelectedParts(),t=p.map(x=>x.part+'	'+x.desc+'	'+x.qty).join('
+');navigator.clipboard.writeText(t).then(()=>showToast('Copied to clipboard!'));}
+function exportCSV(){const p=getSelectedParts();let c='Part Number,Description,Qty,Category
+';p.forEach(x=>c+=x.part+',"'+x.desc+'",'+x.qty+',"'+x.category+'"
+');const b=new Blob([c],{type:'text/csv'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='kit.csv';a.click();showToast('CSV downloaded!');}
+function clearAll(){Object.keys(state).forEach(k=>delete state[k]);document.querySelectorAll('select').forEach(e=>e.selectedIndex=0);document.querySelectorAll('input[type="checkbox"]').forEach(e=>e.checked=false);document.querySelectorAll('[id^="qty-"]').forEach(e=>e.textContent='1');renderSummary();}
+function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rental Kit Builder</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f7fa; color: #333; font-size: 14px; }
+  .header { background: #1a2a3a; color: #fff; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
+  .header h1 { font-size: 18px; font-weight: 600; }
   .header-actions { display: flex; gap: 8px; }
   .layout { display: grid; grid-template-columns: 1fr 340px; gap: 16px; max-width: 1200px; margin: 0 auto; padding: 16px; }
   @media (max-width: 860px) { .layout { grid-template-columns: 1fr; } }
