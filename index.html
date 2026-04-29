@@ -115,7 +115,7 @@ const KIT_STEPS = {
       ]
     },
     {
-      id: 'reader', title: 'Reader Station', description: 'Select reader type', type: 'dropdown',
+      id: 'reader', title: 'Reader / Master Station', description: 'Select master + expansion as needed', type: 'checklist',
       options: [
         { part: '29310002', desc: '1-Month Rental: C/F Primary Reader Station' },
         { part: '29310012', desc: '1-Month Rental: C/F Expansion Reader Station' },
@@ -147,7 +147,6 @@ const KIT_STEPS = {
         { part: '15057900', desc: '1-Month Rental: Vacuum Sensor' },
         { part: '29351267', desc: '1-Month Rental: Bowie Dick Sensor' },
         { part: '29602542', desc: '1-Month Rental: Pro 5.2 Temp/RH Sensor' },
-        { part: '29159999', desc: '1-Month Rental: Contact Puck for TSP Loggers' },
       ]
     },
     {
@@ -217,7 +216,13 @@ const KIT_STEPS = {
         { part: '15050155', desc: '1-Month Rental: PTC-155A Dryblock w/ Insert -25C to +155C' },
         { part: '29425000', desc: '1-Month Rental: PTC-425 Dryblock w/ Insert +33C to +425C' },
         { part: '15050700', desc: '1-Month Rental: RTC-700A Dryblock w/ Insert +33C to +700C' },
-        { part: '29159000', desc: '1-Month Rental: RTC-159 Dryblock w/ Insert -100C to +155C' },
+        { part: '29159000', desc: '1-Month Rental: RTA-159 Dryblock w/ Insert -100C to +155C' },
+      ]
+    },
+    {
+      id: 'accessories', title: 'Accessories', description: 'Optional add-ons', type: 'checklist', badge: 'Optional',
+      options: [
+        { part: '29159999', desc: '1-Month Rental: Contact Puck for TSP Loggers' },
         { part: '15050500', desc: 'Rental: Process Challenge Device (PCD)' },
       ]
     },
